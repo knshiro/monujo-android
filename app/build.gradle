@@ -1,0 +1,71 @@
+apply plugin: 'com.android.model.application'
+
+def libWalletPath = "../libwallet"
+def moneroPath = "${libWalletPath}/monero"
+def boostPath = "${libWalletPath}/crystax-ndk-10.3.2/sources/boost/1.59.0/"
+def moneroHeaderPaths = [ "${moneroPath}/src", "${moneroPath}/contrib/epee/include", "${moneroPath}/external", ]
+
+model {
+    android {
+        compileSdkVersion 23
+        buildToolsVersion "24.0.2"
+        ndk {
+            moduleName "libwallet-android"
+
+            for (path in moneroHeaderPaths) {
+                cppFlags.add("-I${file(path)}".toString())
+            }
+            cppFlags.add("-I${file("${boostPath}/include")}".toString())
+            ldFlags.add("-L${file("${moneroPath}/src/lib/libwallet.a")}".toString())
+            ldLibs.add("wallet")
+            stl "c++_static"
+        }
+
+        defaultConfig {
+            applicationId "me.ugo.monujo"
+            minSdkVersion.apiLevel 19
+            targetSdkVersion.apiLevel 23
+            versionCode 1
+            versionName "1.0"
+
+            buildConfigFields {
+                create() {
+                    type "int"
+                    name "VALUE"
+                    value "1"
+                }
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles.add(file('proguard-rules.pro'))
+            }
+        }
+
+//        productFlavors {
+//            create("flavor1") {
+//                applicationId "me.ugo"
+//            }
+//        }
+
+        // Configures source set directory.
+//        sources {
+//            main {
+//                java {
+//                    source {
+//                        srcDir "src"
+//                    }
+//                }
+//            }
+//        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+}
