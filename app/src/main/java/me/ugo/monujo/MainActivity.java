@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.ugo.monujo.models.Wallet;
+import me.ugo.monujo.models.WalletManager;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,12 +21,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String path = "wallet";
+        String password = "caca";
+        String language = "english";
+
+        Wallet wallet = WalletManager.getInstance().createWallet(path, password, language, false);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, getMsgFromJni(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, getMsgFromJni(), Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
     }
@@ -49,11 +58,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    // new code
-   static {
-       System.loadLibrary("libwallet-android");
-   }
-   public native String getMsgFromJni();
-
 }

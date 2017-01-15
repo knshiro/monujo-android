@@ -2,23 +2,22 @@ apply plugin: 'com.android.model.application'
 
 def libWalletPath = "../libwallet"
 def moneroPath = "${libWalletPath}/monero"
-def boostPath = "${libWalletPath}/crystax-ndk-10.3.2/sources/boost/1.59.0/"
 def moneroHeaderPaths = [ "${moneroPath}/src", "${moneroPath}/contrib/epee/include", "${moneroPath}/external", ]
 
 model {
     android {
         compileSdkVersion 23
-        buildToolsVersion "24.0.2"
+        buildToolsVersion "25.0.2"
         ndk {
             moduleName "libwallet-android"
 
             for (path in moneroHeaderPaths) {
                 cppFlags.add("-I${file(path)}".toString())
             }
-            cppFlags.add("-I${file("${boostPath}/include")}".toString())
-            ldFlags.add("-L${file("${moneroPath}/src/lib/libwallet.a")}".toString())
+            ldFlags.add("-l${file("${moneroPath}/src/lib/libwallet.a")}".toString())
             ldLibs.add("wallet")
             stl "c++_static"
+            abiFilters.add("armeabi-v7a")
         }
 
         defaultConfig {
