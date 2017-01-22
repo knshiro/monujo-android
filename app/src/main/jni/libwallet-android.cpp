@@ -16,7 +16,7 @@ Java_me_ugo_monujo_models_WalletManager_createWalletHandle(JNIEnv *env, jobject 
     const char *password = env->GetStringUTFChars(password_, 0);
     const char *language = env->GetStringUTFChars(language_, 0);
 
-    Bitmonero::Wallet* wallet = Bitmonero::WalletManagerFactory::getWalletManager()->createWallet(std::string(path),
+    Monero::Wallet* wallet = Monero::WalletManagerFactory::getWalletManager()->createWallet(std::string(path),
                                                                                                    std::string(password),
                                                                                                    std::string(language),
                                                                                                    inTestNet);
@@ -36,7 +36,7 @@ Java_me_ugo_monujo_models_WalletManager_openWalletHandle(JNIEnv *env, jobject in
     const char *path = env->GetStringUTFChars(path_, 0);
     const char *password = env->GetStringUTFChars(password_, 0);
 
-    Bitmonero::Wallet* wallet = Bitmonero::WalletManagerFactory::getWalletManager()->openWallet(std::string(path),
+    Monero::Wallet* wallet = Monero::WalletManagerFactory::getWalletManager()->openWallet(std::string(path),
                                                                                                   std::string(password),
                                                                                                   inTestNet);
 
@@ -55,7 +55,7 @@ Java_me_ugo_monujo_models_WalletManager_recoveryWalletHandle(JNIEnv *env, jobjec
     const char *path = env->GetStringUTFChars(path_, 0);
     const char *memo = env->GetStringUTFChars(memo_, 0);
 
-    Bitmonero::Wallet* wallet = Bitmonero::WalletManagerFactory::getWalletManager()->recoveryWallet(std::string(path),
+    Monero::Wallet* wallet = Monero::WalletManagerFactory::getWalletManager()->recoveryWallet(std::string(path),
                                                                                                     std::string(memo),
                                                                                                     inTestNet);
 
@@ -69,7 +69,7 @@ Java_me_ugo_monujo_models_WalletManager_recoveryWalletHandle(JNIEnv *env, jobjec
 JNIEXPORT jstring JNICALL
 Java_me_ugo_monujo_models_Wallet_getAddress(JNIEnv *env, jobject instance) {
 
-    Bitmonero::Wallet* wallet = getHandle<Bitmonero::Wallet>(env, instance);
+    Monero::Wallet* wallet = getHandle<Monero::Wallet>(env, instance);
     const char * address = wallet->address().c_str();
 
     return env->NewStringUTF(address);
